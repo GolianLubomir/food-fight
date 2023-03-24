@@ -15,8 +15,14 @@
 </template>
 
 <script>
+import store from "../store"
+
 export default {
   name: "WeeklyMenus",
+  mounted(){
+    console.log("Mounted...")
+    store.dispatch('fetchMenu')
+  },
   data() {
     return {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

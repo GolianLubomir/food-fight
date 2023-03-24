@@ -1,14 +1,22 @@
 import { createStore } from 'vuex';
+import axiosClient from '../axios'
 
 const store = createStore({
   state: {
-    // Your state variables go here
+
+    meals: []
   },
   mutations: {
-    // Your mutation functions go here
+    setMeals(state, menuItems) {
+      state.meals = menuItems
+    },
   },
   actions: {
-    // Your action functions go here
+    async fetchMenu({ commit }) {
+      const response = await axiosClient.get('/api/meals')
+      const menuItems = response.data
+      commit('setMeals', menuItems)
+    },
   },
   getters: {
     // Your getter functions go here

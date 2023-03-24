@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteRule ^api/meals$ api.php [L,QSA]
+RewriteRule ^api/meals/(\d+)$ api.php?id=$1 [L,QSA]
+RewriteRule ^api/restaurants$ api_restaurant.php [L,QSA]
+RewriteRule ^api/restaurants/(\d+)$ api_restaurant.php?id=$1 [L,QSA]
+RewriteRule ^api/restaurants/download$ restaurants.php [L,QSA]
+RewriteRule ^api/restaurants/parse$ parser.php [L,QSA]
