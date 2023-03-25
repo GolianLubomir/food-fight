@@ -1,60 +1,69 @@
 <template>
-  <div class="weekly-menus p-5">
-    <div v-for="(restaurant, index) in restaurants" :key="index" class="restaurant-menu">
-      <h3>{{ restaurant.name }}</h3>
-      <div class="menu">
-        <div v-for="(menu, dayIndex) in restaurant.menu" :key="dayIndex" class="menu-day">
-          <h5 class="">{{ days[dayIndex] }}</h5>
-          <ul>
-            <li v-for="(item, itemIndex) in menu" :key="itemIndex">{{ item }}</li>
-          </ul>
-        </div>
-      </div>
+  <div class="mx-5 ">
+    <div class="button-container buttons">
+      <button v-for="(day, index) in days" :key="index" @click="selectedDay = index+1" class="day-button">{{ day }}</button>
     </div>
+    <div class="d-flex py-5 mx-auto w-75">
+      <menu-component :meals="filteredVenzaMeals" :restaurant="'Venza'" />
+      <menu-component :meals="filteredEatMeals" :restaurant="'Eat & Meet'"/>
+    </div>
+    
   </div>
 </template>
 
 <script>
+import menuComponent from '../components/menuComponent.vue'
 import store from "../store"
+import { mapGetters } from 'vuex';
+//import menuComponentVue from '../components/menuComponent.vue';
 
 export default {
   name: "WeeklyMenus",
+  components:{
+    menuComponent,
+  },
+  computed: {
+    ...mapGetters(['venzaMeals', 'meals', 'eatMeals']),
+    computedData() {
+      return this.data[this.selectedDay];
+    },
+    filteredMeals() {
+        return this.venzaMeals.filter(meal => meal.day === this.selectedDay);
+    },
+    filteredVenzaMeals() {
+        return this.venzaMeals.filter(meal => meal.restaurant_name === 'Venza' && meal.day === this.selectedDay);
+    },
+    filteredEatMeals() {
+      return this.eatMeals.filter(meal => meal.restaurant_name === 'Eat & Meet' && meal.day === this.selectedDay);
+    },
+
+
+  },
   mounted(){
     console.log("Mounted...")
-    store.dispatch('fetchMenu')
+    console.log(store.state.meals.length)
+    if (store.state.meals.length == 0){
+      store.dispatch('fetchMenu')
+      console.log("Meals were fetched.")
+    }else{
+      console.log("Meals are already fetched.") 
+    }
+    
   },
   data() {
     return {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      restaurants: [
-        {
-          name: "Restaurant 1",
-          menu: [
-            ["Item 1.1", "Item 1.2", "Item 1.3"],
-            ["Item 2.1", "Item 2.2", "Item 2.3"],
-            ["Item 3.1", "Item 3.2", "Item 3.3"],
-            //... more menu items for Restaurant 1
-          ],
-        },
-        {
-          name: "Restaurant 2",
-          menu: [
-            ["Item 1.1", "Item 1.2", "Item 1.3"],
-            ["Item 2.1", "Item 2.2", "Item 2.3"],
-            ["Item 3.1", "Item 3.2", "Item 3.3"],
-            //... more menu items for Restaurant 2
-          ],
-        },
-        {
-          name: "Restaurant 3",
-          menu: [
-            ["Item 1.1", "Item 1.2", "Item 1.3"],
-            ["Item 2.1", "Item 2.2", "Item 2.3"],
-            ["Item 3.1", "Item 3.2", "Item 3.3"],
-            //... more menu items for Restaurant 3
-          ],
-        },
-      ],
+      selectedDay: 1,
+      data: {
+        Monday: 10,
+        Tuesday: 20,
+        Wednesday: 30,
+        Thursday: 40,
+        Friday: 50,
+        Saturday: 60,
+        Sunday: 70,
+      },
+      
     };
   },
 };
@@ -87,6 +96,35 @@ export default {
   flex-basis: calc(33% - 10px);
   margin-bottom: 10px;
   text-align: left;
+}
+
+.buttons{
+  width: fit-content;
+  margin: 0 auto 40px auto;
+  padding: 0 0 0px 0;
+  text-align: center;
+  border-bottom: solid 0px #4e4e4e;
+}
+
+.day-button{
+  background-color: #ffffff;
+  font-size: 18px;
+  color: rgb(142, 146, 142);
+  font-weight: bold;
+
+  text-transform: uppercase;
+  padding: 5px 5px 0 5px;
+  width: 120px;
+  margin: 0 10px;
+  border: none;
+  border-bottom: solid 1px #4e4e4e;
+  border-radius: 10px 10px 0 0 ; 
+}
+
+.day-button:hover {
+  background-color: rgb(240, 240, 240);
+  color: rgb(43, 43, 43);
+  border-bottom: solid 1px #fca421;
 }
 
 

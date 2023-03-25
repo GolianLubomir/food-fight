@@ -1,6 +1,6 @@
 <?php
     header('Content-Type: application/json');
-    //header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: *');
 
     require_once('config.php');
 
@@ -91,7 +91,7 @@
     {
         $stmt = $db->query('SELECT m.menu, m.name, m.price, r.name AS restaurant_name, m.day, m.src_image FROM meals AS m INNER JOIN restaurant AS r ON m.restaurant_id = r.id');
         $meals = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($meals);
+       echo  json_encode($meals);
     }
 
     function get_meal($db, $id) {
