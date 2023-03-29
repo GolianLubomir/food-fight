@@ -4,7 +4,7 @@
 require_once('config.php');
 
 $restaurants = array(
-    array('name' => 'Kaloveská klubovňa', 'url' => 'https://www.nasaklubovna.sk/klubovne/karloveska/menu/denne-menu/'),
+    array('name' => 'Karloveská klubovňa', 'url' => 'https://www.nasaklubovna.sk/klubovne/karloveska/menu/denne-menu/'),
     array('name' => 'Eat & Meet', 'url' => 'http://eatandmeet.sk/tyzdenne-menu'),
     array('name' => 'Venza', 'url' => 'https://www.novavenza.sk/tyzdenne-menu'),
     

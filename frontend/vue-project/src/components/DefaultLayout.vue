@@ -1,7 +1,7 @@
 <template>
-  <div class="w-100 my-bg">
+  <div class="w-100">
     <Navbar />
-    <div class="w-100 mx-auto my-5">
+    <div class="w-100 mx-auto mt-5">
         <slot> </slot>
     </div>
     
@@ -20,8 +20,5 @@ export default {
 
 <!-- Add your preferred CSS styling here -->
 <style>
-.my-bg{
-background: #ffffff;
-/*background: linear-gradient(90deg, rgba(184,184,184,1) 0%, rgba(255,255,255,0.14609593837535018) 18%);*/
-}
+
 </style>

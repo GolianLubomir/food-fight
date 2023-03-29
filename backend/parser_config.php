@@ -12,9 +12,9 @@
         $insert_meal_stmt->bindParam(':src_image', $val_image_src);
 
         if ($insert_meal_stmt->execute()) {
-            echo "Meal inserted successfully";
+            //echo "Meal inserted successfully";
         } else {
-            echo "Error inserting meal: " . $insert_meal_stmt->errorInfo()[2];
+            //echo "Error inserting meal: " . $insert_meal_stmt->errorInfo()[2];
         }
     }
 

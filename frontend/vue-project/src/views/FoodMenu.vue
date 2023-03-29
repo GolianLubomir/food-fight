@@ -1,11 +1,28 @@
 <template>
-  <div class="mx-5 ">
-    <div class="button-container buttons">
-      <button v-for="(day, index) in days" :key="index" @click="selectedDay = index+1" class="day-button">{{ day }}</button>
+  <div class="mx-5 pt-0 bg-my-light">
+    
+    <div class="button-container buttons opacity-100">
+      <div>
+        <button v-for="(restaurant, index) in restaurants" :key="index" @click="selectedRestaurant = index+1, selectedDay = null" :class="{ active: index+1 == selectedRestaurant }" class="day-button">{{ restaurant }}</button>
+      </div>
+      <div class="py-5">
+        <button v-for="(day, index) in days" :key="index" @click="selectedDay = index+1, selectedRestaurant = null" :class="{ active: index+1 == selectedDay }" class="day-button">{{ day }}</button>
+      </div>
     </div>
-    <div class="d-flex py-5 mx-auto w-75">
-      <menu-component :meals="filteredVenzaMeals" :restaurant="'Venza'" />
+    <div v-if="selectedDay != null" class="d-flex py-0 mx-auto w-100">
+      <menu-component :meals="filteredKlubovnaMeals" :restaurant="'Karloveská klubovňa'"/>
       <menu-component :meals="filteredEatMeals" :restaurant="'Eat & Meet'"/>
+      <menu-component :meals="filteredVenzaMeals" :restaurant="'Venza'" />
+    </div>
+
+    <div v-if="selectedRestaurant == 1" class="d-flex py-0 mx-auto w-100">
+      <week-menu-component :meals="filteredKlubovnaWeekMenu" :restaurant="'Karloveská klubovňa'"/>
+    </div>
+    <div v-if="selectedRestaurant == 2" class="d-flex py-0 mx-auto w-100">
+      <week-menu-component :meals="filteredEatWeekMenu" :restaurant="'Eat & Meet'"/>
+    </div>
+    <div v-if="selectedRestaurant == 3" class="d-flex py-0 mx-auto w-100">
+      <week-menu-component :meals="filteredVenzaWeekMenu" :restaurant="'Venza'" />
     </div>
     
   </div>
@@ -13,6 +30,7 @@
 
 <script>
 import menuComponent from '../components/menuComponent.vue'
+import WeekMenuComponent from '../components/WeekMenuComponent.vue'
 import store from "../store"
 import { mapGetters } from 'vuex';
 //import menuComponentVue from '../components/menuComponent.vue';
@@ -21,20 +39,47 @@ export default {
   name: "WeeklyMenus",
   components:{
     menuComponent,
+    WeekMenuComponent,
+  },
+  methods:{
+    /*toggleActive() {
+      this.buttons.forEach((button, i) => {
+        if (i === selectedDay) {
+          button.isActive = true;
+        } else {
+          button.isActive = false;
+        }
+      });
+    }*/
   },
   computed: {
     ...mapGetters(['venzaMeals', 'meals', 'eatMeals']),
     computedData() {
       return this.data[this.selectedDay];
+      
     },
     filteredMeals() {
         return this.venzaMeals.filter(meal => meal.day === this.selectedDay);
     },
     filteredVenzaMeals() {
-        return this.venzaMeals.filter(meal => meal.restaurant_name === 'Venza' && meal.day === this.selectedDay);
+        return this.meals.filter(meal => meal.restaurant_name === 'Venza' && meal.day === this.selectedDay);
     },
     filteredEatMeals() {
-      return this.eatMeals.filter(meal => meal.restaurant_name === 'Eat & Meet' && meal.day === this.selectedDay);
+      return this.meals.filter(meal => meal.restaurant_name === 'Eat & Meet' && meal.day === this.selectedDay);
+    },
+    filteredKlubovnaMeals() {
+      return this.meals.filter(meal => meal.restaurant_name === 'Karloveská klubovňa' && meal.day === this.selectedDay);
+    },
+
+
+    filteredVenzaWeekMenu() {
+        return this.meals.filter(meal => meal.restaurant_name === 'Venza');
+    },
+    filteredEatWeekMenu() {
+      return this.meals.filter(meal => meal.restaurant_name === 'Eat & Meet');
+    },
+    filteredKlubovnaWeekMenu() {
+      return this.meals.filter(meal => meal.restaurant_name === 'Karloveská klubovňa');
     },
 
 
@@ -52,24 +97,22 @@ export default {
   },
   data() {
     return {
+      restaurants: ['Klubovňa', 'Eat & Meet', 'Venza'],
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      selectedDay: 1,
-      data: {
-        Monday: 10,
-        Tuesday: 20,
-        Wednesday: 30,
-        Thursday: 40,
-        Friday: 50,
-        Saturday: 60,
-        Sunday: 70,
-      },
-      
+      selectedDay: 1, 
+      selectedRestaurant: null, 
     };
   },
 };
 </script>
 
 <style scoped>
+.bg-my-light{
+  background: #ffffff;
+  opacity: 0.85;
+  border-radius: 50px;
+}
+
 .weekly-menus {
   display: flex;
   flex-wrap: wrap;
@@ -109,7 +152,7 @@ export default {
 .day-button{
   background-color: #ffffff;
   font-size: 18px;
-  color: rgb(142, 146, 142);
+  color: rgb(94, 94, 94);
   font-weight: bold;
 
   text-transform: uppercase;
@@ -121,9 +164,15 @@ export default {
   border-radius: 10px 10px 0 0 ; 
 }
 
+.active{
+  background-color: #ececec;
+  color: rgb(43, 43, 43);
+  border-bottom: solid 1px #fca421;
+}
+
 .day-button:hover {
   background-color: rgb(240, 240, 240);
-  color: rgb(43, 43, 43);
+  /*color: rgb(43, 43, 43);*/
   border-bottom: solid 1px #fca421;
 }
 
