@@ -1,6 +1,7 @@
 <?php
     header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Methods: DELETE');
 
     require_once('config.php');
 
@@ -28,7 +29,21 @@
             update_meal($db, $_GET['id'], $_PUT);
             break;*/
         case 'DELETE':
-            
+            if (isset($_GET['id'])) {
+                // Validate the ID parameter for the delete_meal function
+                $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+                if ($id === false) {
+                    http_response_code(400);
+                    echo json_encode(['message' => 'Invalid ID parameter']);
+                } else {
+                    delete_restaurant($pdo, $id);
+                }
+            } else {
+                delete_restaurants($pdo);
+                /*http_response_code(400);
+                echo json_encode(['message' => 'Missing ID parameter']);*/
+                echo json_encode(['message' => 'All restaurants were deleted']);
+            }
             break;
     }
 
@@ -61,6 +76,34 @@
             http_response_code(404);
             echo json_encode(['message' => 'Restaurant not found']);
         }
+    }
+
+    function delete_restaurant($db, $id) {
+        $empty_html = '';
+        $stmt = $db->prepare('UPDATE restaurant SET html = :html WHERE id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':html', $empty_html);
+        $stmt->execute();
+
+        $stmt = $db->prepare('DELETE FROM meals WHERE restaurant_id = :id');
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+
+        echo json_encode(array('success' => 'Data deleted successfully'));
+    }
+
+    function delete_restaurants($db) {
+        $empty_html = '';
+        $stmt = $db->prepare('UPDATE restaurant SET html = :html');
+        $stmt->bindParam(':html', $empty_html);
+        $stmt->execute();
+
+        $stmt = $db->prepare('DELETE FROM meals');
+        $stmt->execute();
+        /*
+        $stmt = $db->prepare('DELETE FROM restaurant WHERE id > 3');
+        $stmt->execute();
+        echo json_encode(array('success' => 'Data deleted successfully'));*/
     }
 
     

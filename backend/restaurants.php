@@ -17,10 +17,10 @@ foreach ($restaurants as $restaurant){
     curl_close($curl);
     //$name = "Venza";
 
-
-    $stmt = $pdo->prepare("INSERT INTO `restaurant` (`name`, `url`, `html`) VALUES (:name, :url, :html)");
+    $stmt = $pdo->prepare("UPDATE `restaurant` SET html = :html WHERE name = :name");
+    //$stmt = $pdo->prepare("INSERT INTO `restaurant` (`name`, `url`, `html`) VALUES (:name, :url, :html)");
     $stmt->bindParam(":name", $restaurant['name']);
-    $stmt->bindParam(":url", $restaurant['url']);
+    //$stmt->bindParam(":url", $restaurant['url']);
     $stmt->bindParam(":html", $html);
     $stmt->execute();
     echo json_encode(['message' => 'Restaurant data downloaded.']);

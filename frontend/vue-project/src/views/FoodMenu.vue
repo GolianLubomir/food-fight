@@ -2,14 +2,16 @@
   <div class="mx-5 pt-0 bg-my-light">
     
     <div class="button-container buttons opacity-100">
-      <div>
-        <button v-for="(restaurant, index) in restaurants" :key="index" @click="selectedRestaurant = index+1, selectedDay = null" :class="{ active: index+1 == selectedRestaurant }" class="day-button">{{ restaurant }}</button>
+      <div class="pb-3">
+        <button v-for="(restaurant, index) in restaurants" :key="index" @click="selectedRestaurant = index+1, selectedDay = null" :class="{ active: index+1 == selectedRestaurant }" class="button-55">{{ restaurant }}</button>
       </div>
-      <div class="py-5">
-        <button v-for="(day, index) in days" :key="index" @click="selectedDay = index+1, selectedRestaurant = null" :class="{ active: index+1 == selectedDay }" class="day-button">{{ day }}</button>
+      <div class="py-2">
+        <button v-for="(day, index) in days" :key="index" @click="selectedDay = index+1, selectedRestaurant = null" :class="{ active: index+1 == selectedDay }" class="button-55 ">{{ day }}</button>
       </div>
     </div>
-    <div v-if="selectedDay != null" class="d-flex py-0 mx-auto w-100">
+    <div></div>
+    <p class="text-center selected-date">{{selectedDate}}</p>
+    <div v-if="selectedDay != null" class="py-0 mx-auto w-100 menus">
       <menu-component :meals="filteredKlubovnaMeals" :restaurant="'Karloveská klubovňa'"/>
       <menu-component :meals="filteredEatMeals" :restaurant="'Eat & Meet'"/>
       <menu-component :meals="filteredVenzaMeals" :restaurant="'Venza'" />
@@ -54,9 +56,25 @@ export default {
   },
   computed: {
     ...mapGetters(['venzaMeals', 'meals', 'eatMeals']),
-    computedData() {
+    /*computedData() {
       return this.data[this.selectedDay];
       
+    },*/
+    selectedDate() {
+      const date = new Date();
+      const currentDay = date.getDay();
+      date.setDate(date.getDate() + (this.selectedDay - currentDay));
+      /*if(this.selectedDay > currentDay){
+        date.setDate(date.getDate() + (this.selectedDay - currentDay));
+      }
+      else if(this.selectedDay < currentDay){
+        date.setDate(date.getDate() + (this.selectedDay - currentDay ));
+      } else {
+
+      }*/
+      const options = { year: "numeric", month: "long", day: "numeric" };
+
+      return date.toLocaleDateString("sk", options);
     },
     filteredMeals() {
         return this.venzaMeals.filter(meal => meal.day === this.selectedDay);
@@ -96,11 +114,15 @@ export default {
     
   },
   data() {
+    const date = new Date();
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    const dayOfWeek = date.getDay();
     return {
       restaurants: ['Klubovňa', 'Eat & Meet', 'Venza'],
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      selectedDay: 1, 
+      selectedDay: dayOfWeek, 
       selectedRestaurant: null, 
+      date: date.toLocaleDateString("sk", options),
     };
   },
 };
@@ -111,6 +133,15 @@ export default {
   background: #ffffff;
   opacity: 0.85;
   border-radius: 50px;
+}
+
+.selected-date{
+  background: #a5e3f7;
+  font-weight: 500;
+  width: 200px;
+  margin: 10px auto 30px auto;
+  border-radius: 50px;
+  padding: 2px 0;
 }
 
 .weekly-menus {
@@ -141,19 +172,23 @@ export default {
   text-align: left;
 }
 
+.menus{
+  display: flex;
+}
+
 .buttons{
   width: fit-content;
-  margin: 0 auto 40px auto;
+  margin: 0 auto 0px auto;
   padding: 0 0 0px 0;
   text-align: center;
   border-bottom: solid 0px #4e4e4e;
 }
 
-.day-button{
+/*.day-button{
   background-color: #ffffff;
   font-size: 18px;
-  color: rgb(94, 94, 94);
-  font-weight: bold;
+  color: rgb(107, 107, 107);
+  font-weight: 600;
 
   text-transform: uppercase;
   padding: 5px 5px 0 5px;
@@ -164,23 +199,80 @@ export default {
   border-radius: 10px 10px 0 0 ; 
 }
 
-.active{
-  background-color: #ececec;
-  color: rgb(43, 43, 43);
-  border-bottom: solid 1px #fca421;
-}
+
 
 .day-button:hover {
-  background-color: rgb(240, 240, 240);
-  /*color: rgb(43, 43, 43);*/
+  background-color: #a5e3f7;
+  color: rgb(43, 43, 43);
   border-bottom: solid 1px #fca421;
+}*/
+
+
+
+/* CSS */
+.button-55 {
+  width: 120px;
+  margin: 10px 10px;
+  align-self: center;
+  background-color: #fff;
+  background-image: none;
+  background-position: 0 90%;
+  background-repeat: repeat no-repeat;
+  background-size: 4px 3px;
+  border-radius: 15px 225px 255px 15px 15px 255px 225px 15px;
+  border-style: solid;
+  border-width: 2px;
+  box-shadow: rgba(0, 0, 0, .2) 15px 28px 25px -18px;
+  box-sizing: border-box;
+  color: #41403e;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Neucha, sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  line-height: 23px;
+  outline: none;
+  padding: .75rem;
+  text-decoration: none;
+  transition: all 235ms ease-in-out;
+  border-bottom-left-radius: 15px 255px;
+  border-bottom-right-radius: 225px 15px;
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
 }
 
+.button-55:hover {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 8px -5px;
+  transform: translate3d(0, 2px, 0);
+}
+
+.button-55:focus {
+  box-shadow: rgba(0, 0, 0, .3) 2px 8px 4px -6px;
+}
+
+.active{
+  background-color: #a5e3f7;
+  color: rgb(37, 37, 37);
+  font-weight: 700;
+
+  /*border: solid 1px #b6d0ee;*/
+}
 
 @media (max-width: 768px) {
   .restaurant-menu {
     flex-basis: 100%;
     margin-bottom: 20px;
   }
+}
+
+@media (max-width: 580px) {
+ .menus{
+  display: inline;
+ }
+
 }
 </style>

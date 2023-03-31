@@ -57,7 +57,7 @@
                 }
             } else {
                 // Return an error response if the request is empty
-                delete_meals($pdo);
+                //delete_meals($pdo);
             }
             break;
         /*case 'PUT':
