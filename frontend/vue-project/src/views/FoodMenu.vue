@@ -116,7 +116,8 @@ export default {
   data() {
     const date = new Date();
     const options = { year: "numeric", month: "long", day: "numeric" };
-    const dayOfWeek = date.getDay();
+    const dayOfWeek = date.getDay() == 0 ? 7 : date.getDay();
+    
     return {
       restaurants: ['Klubovňa', 'Eat & Meet', 'Venza'],
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],

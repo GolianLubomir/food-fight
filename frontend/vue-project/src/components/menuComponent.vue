@@ -2,7 +2,10 @@
   <div class="w-100">
     <h4 class="menu-header">{{ restaurant }}  </h4>
     <ul class="menu">
+      
       <div v-for="meal in meals" :key="meal.name" class="meal-div">
+        
+        <img v-if="meal.src_image != null" :src="meal.src_image" alt="img" width="100" height="100" class="image">
         <li class="meal" >
           <h5> {{ meal.menu }} </h5>
           <p class="mb-0 font-weight-bold"> {{ meal.name }}  </p> 
@@ -37,6 +40,13 @@
 </script>
 
 <style>
+.image{
+  position: absolute;
+  z-index: 0;
+  opacity: 0.5;
+  width: 120px;
+  height: 120px;
+}
 .menu-header{
     text-align: center;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -73,6 +83,7 @@
     border-bottom: 2px solid #89b1e6;
     width: 80%;
     margin: 15px auto;
+    z-index: 1;
     
 }
 
@@ -86,9 +97,17 @@
     height: 150px;
 }
 
+
+
+
+
 @media (max-width: 1300px) {
   .meal-div{
       height: 175px;
+  }
+  .image{
+    width: 150px;
+    height: 150px;
   }
 
 }
@@ -107,9 +126,13 @@
 
 }
 
-@media (max-width: 580px) {
+@media (max-width: 600px) {
   .meal-div{
       height: 150px;
+  }
+  .image{
+    width: 120px;
+    height: 120px;
   }
   .meal{
     width: 100%;

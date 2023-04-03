@@ -1,13 +1,19 @@
 <template>
-  <p>Description api</p>
+  <div>
+    <iframe :src="docUrl" width="100%"  frameborder="0"></iframe>
+  </div>
 </template>
 
 <script>
-export default {
 
-}
+export default {
+  data() {
+    return {
+      docUrl: "" // Replace this with your own URL
+    };
+  },
+
+
+};
 </script>
 
-<style>
-
-</style>
