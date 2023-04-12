@@ -28,7 +28,7 @@
                 $price = filter_input(INPUT_POST, 'price', FILTER_SANITIZE_SPECIAL_CHARS);
                 $menu = filter_input(INPUT_POST, 'menu', FILTER_SANITIZE_SPECIAL_CHARS);
                 $restaurant_id = filter_input(INPUT_POST, 'restaurant_id', FILTER_VALIDATE_INT);
-                $day = filter_input(INPUT_POST, 'description', FILTER_VALIDATE_INT);
+                $day = filter_input(INPUT_POST, 'day', FILTER_VALIDATE_INT);
                 
         
                 if (!$name || !$price || !$menu || !$restaurant_id || !$day) {

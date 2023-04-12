@@ -40,8 +40,7 @@
                 }
             } else {
                 delete_restaurants($pdo);
-                /*http_response_code(400);
-                echo json_encode(['message' => 'Missing ID parameter']);*/
+
                 echo json_encode(['message' => 'All restaurants were deleted']);
             }
             break;

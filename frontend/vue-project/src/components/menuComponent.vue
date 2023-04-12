@@ -50,7 +50,6 @@
 .menu-header{
     text-align: center;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    /*font-family: 'Poppins';*/
     color: #333333;
     width: 90%;
     min-width: 150px;
@@ -58,7 +57,6 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    /*border-bottom: 1px solid #8b8b8b;*/
     margin: 0 auto 0px auto;
     background: #ffd9a0;
     border-radius: 20px 20px 0 0;
@@ -71,9 +69,6 @@
     padding: 0;
     width: 90%;
     margin: 0 auto 50px auto;
-    /*border-right: 1px solid #a5a5a5;
-    border-left: 1px solid #a5a5a5;
-    border-bottom: 1px solid #a5a5a5;*/
     background: #fff9f0;
     border-radius:   0 0 5px 5px;
 }

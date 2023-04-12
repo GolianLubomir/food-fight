@@ -13,9 +13,6 @@
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     $html_data = $result['html'];
 
-    //echo $html_data;
-
-
     $dom = new DOMDocument();
     $dom->loadHTML($html_data);
     $insert_meal_sql = "INSERT INTO meals (name, price, menu, restaurant_id, day, src_image) VALUES (:name, :price, :menu, :restaurant_id, :day, :src_image)";
@@ -24,8 +21,6 @@
         $counter_h5 = 0;
         $counter_p = 0;
         $day = $dom->getElementById('day_' . $i .'');
-        //echo "------------------";
-        //echo "Den :" . $i ;
         
         while($day->getElementsByTagName('h5')->item($counter_h5) != null){
             if ($day->nodeType == XML_ELEMENT_NODE) {
@@ -45,20 +40,11 @@
                     $counter_p += 1;
                 }
                 $val_name_aler = $val_name . " " . $val_aler;
-                /*echo "--//--";
-                echo $val_name_aler;
-                echo " ";
-                echo $val_menu;
-                echo " ";
-                echo $val_price;
-                echo " ";*/
 
                 if(!is_meal_in_database($pdo, $val_name_aler, $restaurant_id, $i)){
                     insert_meal($pdo, $insert_meal_sql, $val_name_aler, $val_price, $val_menu, $restaurant_id, $i, $val_image_src);
                 }else{
-                    //http_response_code(200);
-                    //echo json_encode(['message' => 'Food is already inserted.']);
-                   // echo "Food is already inserted.";
+
                 }
             }
         }

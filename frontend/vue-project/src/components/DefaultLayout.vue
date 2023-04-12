@@ -29,7 +29,6 @@ export default {
 };
 </script>
 
-<!-- Add your preferred CSS styling here -->
 <style>
 .date{
   text-align: right;

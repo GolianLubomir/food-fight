@@ -18,7 +18,6 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/api">API</router-link>
           </li>
-          <!-- Add more links here as needed -->
         </ul>
       </div>
     </div>
@@ -31,7 +30,6 @@ export default {
 };
 </script>
 
-<!-- Add your preferred CSS styling here -->
 <style scoped>
 .bg-my{
   background-color: #f3f3f3;

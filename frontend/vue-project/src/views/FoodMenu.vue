@@ -35,7 +35,6 @@ import menuComponent from '../components/menuComponent.vue'
 import WeekMenuComponent from '../components/WeekMenuComponent.vue'
 import store from "../store"
 import { mapGetters } from 'vuex';
-//import menuComponentVue from '../components/menuComponent.vue';
 
 export default {
   name: "WeeklyMenus",
@@ -44,36 +43,15 @@ export default {
     WeekMenuComponent,
   },
   methods:{
-    /*toggleActive() {
-      this.buttons.forEach((button, i) => {
-        if (i === selectedDay) {
-          button.isActive = true;
-        } else {
-          button.isActive = false;
-        }
-      });
-    }*/
+
   },
   computed: {
     ...mapGetters(['venzaMeals', 'meals', 'eatMeals']),
-    /*computedData() {
-      return this.data[this.selectedDay];
-      
-    },*/
     selectedDate() {
       const date = new Date();
       const currentDay = date.getDay();
       date.setDate(date.getDate() + (this.selectedDay - currentDay));
-      /*if(this.selectedDay > currentDay){
-        date.setDate(date.getDate() + (this.selectedDay - currentDay));
-      }
-      else if(this.selectedDay < currentDay){
-        date.setDate(date.getDate() + (this.selectedDay - currentDay ));
-      } else {
-
-      }*/
       const options = { year: "numeric", month: "long", day: "numeric" };
-
       return date.toLocaleDateString("sk", options);
     },
     filteredMeals() {
@@ -185,32 +163,6 @@ export default {
   border-bottom: solid 0px #4e4e4e;
 }
 
-/*.day-button{
-  background-color: #ffffff;
-  font-size: 18px;
-  color: rgb(107, 107, 107);
-  font-weight: 600;
-
-  text-transform: uppercase;
-  padding: 5px 5px 0 5px;
-  width: 120px;
-  margin: 0 10px;
-  border: none;
-  border-bottom: solid 1px #4e4e4e;
-  border-radius: 10px 10px 0 0 ; 
-}
-
-
-
-.day-button:hover {
-  background-color: #a5e3f7;
-  color: rgb(43, 43, 43);
-  border-bottom: solid 1px #fca421;
-}*/
-
-
-
-/* CSS */
 .button-55 {
   width: 120px;
   margin: 10px 10px;
@@ -259,8 +211,6 @@ export default {
   background-color: #a5e3f7;
   color: rgb(37, 37, 37);
   font-weight: 700;
-
-  /*border: solid 1px #b6d0ee;*/
 }
 
 @media (max-width: 768px) {

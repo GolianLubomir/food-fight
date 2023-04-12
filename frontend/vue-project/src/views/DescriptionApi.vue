@@ -1,19 +1,16 @@
 <template>
-  <div>
-    <iframe :src="docUrl" width="100%"  frameborder="0"></iframe>
+  <div class="flex flex-col items-center justify-center h-screen">
+    <img src="../assets/api-description/doc-1.PNG" class="max-w-screen my-4">
+    <img src="../assets/api-description/doc-2.PNG" class="max-w-screen my-4">
+    <img src="../assets/api-description/doc-3.PNG" class="max-w-screen my-4">
+    <img src="../assets/api-description/doc-4.PNG" class="max-w-screen my-4">
+    <img src="../assets/api-description/doc-5.PNG" class="max-w-screen my-4">
   </div>
 </template>
 
-<script>
-
-export default {
-  data() {
-    return {
-      docUrl: "" // Replace this with your own URL
-    };
-  },
-
-
-};
-</script>
-
+<style>
+img {
+  display: block;
+  margin: 0 auto;
+}
+</style>

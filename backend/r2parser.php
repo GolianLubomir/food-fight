@@ -26,20 +26,15 @@
                 $val_menu =  $menu->getElementsByTagName('h4')->item(0)->nodeValue;
                 $val_price =  $menu->getElementsByTagName('span')->item(0)->nodeValue;
                 $val_name =  $menu->getElementsByTagName('p')->item(0)->nodeValue;
-                $val_image_src =  $menu->getElementsByTagName('img')->item(0)->getAttribute('src');
-
-                /*echo "------------------";
-                echo $val_menu;
-                echo " ";
-                echo $val_price;
-                echo " ";
-                echo $val_name;
-                echo " ";*/
+                if($val_name != null){
+                    $val_image_src = $menu->getElementsByTagName('img')->item(0)->getAttribute('src');
+                }
+                
 
                 if(!is_meal_in_database($pdo, $val_name, $restaurant_id, $i)){
                     insert_meal($pdo, $insert_meal_sql, $val_name, $val_price, $val_menu, $restaurant_id, $i, $val_image_src);
                 }else{
-                    //echo "Food is already inserted.";
+
                 }
             }
         }

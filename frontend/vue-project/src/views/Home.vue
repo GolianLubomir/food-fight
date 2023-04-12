@@ -17,6 +17,5 @@ export default {
 };
 </script>
 
-<!-- Add your preferred CSS styling here -->
 <style>
 </style>

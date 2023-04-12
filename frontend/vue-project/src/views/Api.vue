@@ -48,9 +48,8 @@ export default {
       axiosClient.get('/api/restaurants/download')
         .then(response => {
           console.log(response.data);
-          //this.response_message = response.data;
           this.response_message = "Data was downloaded successfully.";
-          // Do something with the data
+
         })
         .catch(error => {
           console.log(error);
@@ -60,9 +59,7 @@ export default {
       axiosClient.get('/api/restaurants/parse')
         .then(response => {
           console.log(response.data);
-          //this.response_message = response.data;
           this.response_message = "Data was parsed successfully.";
-          // Do something with the data
         })
         .catch(error => {
           console.log(error);
