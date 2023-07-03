@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-5 pt-0 bg-my-light">
+  <div class="mx-2 pt-0 bg-my-light">
     
     <div class="button-container buttons opacity-100">
       <div class="pb-3">
@@ -98,7 +98,8 @@ export default {
     
     return {
       restaurants: ['Klubovňa', 'Eat & Meet', 'Venza'],
-      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      //days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      days: ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota", "Nedeľa"],
       selectedDay: dayOfWeek, 
       selectedRestaurant: null, 
       date: date.toLocaleDateString("sk", options),
@@ -184,6 +185,7 @@ export default {
   font-size: 1rem;
   font-weight: 500;
   letter-spacing: 1px;
+  white-space: nowrap;
   line-height: 23px;
   outline: none;
   padding: .75rem;
@@ -225,5 +227,20 @@ export default {
   display: inline;
  }
 
+ .button-55{
+  width: 100px;
+  font-size: 0.8rem;
+  padding: .4rem;
+  margin: 5px 5px;
+ }
+
+ @media (max-width: 450px) {
+
+
+  .button-55{
+    width: 80px;
+    font-size: 0.7rem;
+  }
+ }
 }
 </style>

@@ -9,7 +9,6 @@
     switch($_SERVER['REQUEST_METHOD']) {
         case 'GET':
             if(isset($_GET['id'])) {
-                // Validate the ID parameter for the get_meal function
                 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
                 if ($id === false) {
                     http_response_code(400);
@@ -21,16 +20,8 @@
                 get_restaurants($pdo);
             }
             break;
-        case 'POST':
-            
-            break;
-        /*case 'PUT':
-            parse_str(file_get_contents('php://input'), $_PUT);
-            update_meal($db, $_GET['id'], $_PUT);
-            break;*/
         case 'DELETE':
             if (isset($_GET['id'])) {
-                // Validate the ID parameter for the delete_meal function
                 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
                 if ($id === false) {
                     http_response_code(400);
@@ -47,63 +38,128 @@
     }
 
     /**
-     * READ from Meals
-     * @param $db
+     * Fetch all restaurants from the database
+     *
+     * @param PDO $db
      * @return void
      */
-    function get_restaurants($db)
+    function get_restaurants(PDO $db)
     {
-        $stmt = $db->query('SELECT id, name, url, date FROM restaurant');
-        $restaurants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $db->query('SELECT id, name, url, date FROM restaurants');
+            $restaurants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        if($restaurants) {
-            echo json_encode($restaurants);
-        } else {
-            http_response_code(404);
-            echo json_encode(['message' => 'Restaurants not found']);
+            if(!empty($restaurants)) {
+                send_response($restaurants, "Restaurants fetched successfully.", "Error fetching restaurants.");
+            } else {
+                http_response_code(404);
+                echo json_encode(['message' => 'No restaurants found']);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error occurred while fetching restaurants: ' . $e->getMessage()]);
         }
     }
 
-    function get_restaurant($db, $id) {
-        $query = 'SELECT id, name, url, date FROM restaurant WHERE id = ?';
-        $stmt = $db->prepare($query);
-        $stmt->execute([$id]);
-        $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
-        if($restaurant) {
-            echo json_encode($restaurant);
-        } else {
-            http_response_code(404);
-            echo json_encode(['message' => 'Restaurant not found']);
+
+    /**
+     * Fetch a single restaurant by its ID
+     * @param PDO $db
+     * @param int $id
+     * @return void
+     */
+    function get_restaurant(PDO $db, $id) {
+        $id = validate_id($id);
+        if (!$id) {
+            http_response_code(400);
+            echo json_encode(['message' => 'Invalid ID parameter']);
+            return;
         }
-    }
-
-    function delete_restaurant($db, $id) {
-        $empty_html = '';
-        $stmt = $db->prepare('UPDATE restaurant SET html = :html WHERE id = :id');
-        $stmt->bindParam(':id', $id);
-        $stmt->bindParam(':html', $empty_html);
-        $stmt->execute();
-
-        $stmt = $db->prepare('DELETE FROM meals WHERE restaurant_id = :id');
-        $stmt->bindParam(':id', $id);
-        $stmt->execute();
-
-        echo json_encode(array('success' => 'Data deleted successfully'));
-    }
-
-    function delete_restaurants($db) {
-        $empty_html = '';
-        $stmt = $db->prepare('UPDATE restaurant SET html = :html');
-        $stmt->bindParam(':html', $empty_html);
-        $stmt->execute();
-
-        $stmt = $db->prepare('DELETE FROM meals');
-        $stmt->execute();
-        /*
-        $stmt = $db->prepare('DELETE FROM restaurant WHERE id > 3');
-        $stmt->execute();
-        echo json_encode(array('success' => 'Data deleted successfully'));*/
-    }
-
     
+        try {
+            $query = 'SELECT id, name, url, date FROM restaurants WHERE id = ?';
+            $stmt = $db->prepare($query);
+            $stmt->execute([$id]);
+            $restaurant = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($restaurant) {
+                send_response($restaurant, "Restaurant fetched successfully.", "Error fetching restaurant.");
+            } else {
+                http_response_code(404);
+                echo json_encode(['message' => 'Restaurant not found']);
+            }
+        } catch (PDOException $e) {
+            http_response_code(500);
+            echo json_encode(['message' => 'Error occurred while fetching restaurant: ' . $e->getMessage()]);
+        }
+    }
+    
+
+    /**
+     * Delete a restaurant and associated meals
+     * @param PDO $db
+     * @param int $id
+     * @return void
+     */
+    function delete_restaurant(PDO $db, $id) {
+        try {
+            $db->beginTransaction();
+            
+            $empty_html = '';
+            $stmt = $db->prepare('UPDATE restaurants SET html = :html WHERE id = :id');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':html', $empty_html, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $stmt = $db->prepare('DELETE FROM foods WHERE restaurant_id = :id');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            $db->commit();
+
+            http_response_code(201);
+            echo json_encode(['message' => "Data deleted successfully."]);
+        } catch(PDOException $e) {
+            $db->rollBack();
+            http_response_code(500);
+            echo json_encode(['message' => 'Error occurred while deleting restaurant: ' . $e->getMessage()]);
+        }
+    }
+
+
+
+    /**
+     * DELETE all Restaurants and Foods
+     * @param PDO $db
+     * @return void
+     */
+    function delete_restaurants(PDO $db) {
+        try {
+            $db->beginTransaction();
+            
+            $stmt = $db->prepare('UPDATE restaurants SET html = ""');
+            $stmt->execute();
+
+            $stmt = $db->prepare('DELETE FROM foods');
+            $stmt->execute();
+            
+            $db->commit();
+            http_response_code(201);
+            echo json_encode(['message' => "Data deleted successfully."]);
+        } catch (Exception $e) {
+            $db->rollBack();
+            http_response_code(500);
+            echo json_encode(['message' => 'Server error: ' . $e->getMessage()]);
+        }
+    }
+
+    function send_response($result, $successMessage, $errorMessage) {
+        if ($result) {
+            http_response_code(201);
+            echo json_encode(['message' => $successMessage, 'id' => $result]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['message' => $errorMessage]);
+        }
+    }
 ?>  

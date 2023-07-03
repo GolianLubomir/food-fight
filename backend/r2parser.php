@@ -2,11 +2,11 @@
     header('Content-Type: application/json');
     header('Access-Control-Allow-Origin: *');
     require_once('config.php');
-    require_once('parser_config.php');
+    require_once('parser_helper.php');
 
     $restaurant_1 = "Eat & Meet";
     $restaurant_id = 2;
-    $sql = 'SELECT html FROM restaurant WHERE name = :name ORDER BY date DESC LIMIT 1';
+    $sql = 'SELECT html FROM restaurants WHERE name = :name ORDER BY date DESC LIMIT 1';
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['name' => $restaurant_1]);
 
@@ -15,7 +15,6 @@
 
     $dom = new DOMDocument();
     $dom->loadHTML($html_data);
-    $insert_meal_sql = "INSERT INTO meals (name, price, menu, restaurant_id, day, src_image) VALUES (:name, :price, :menu, :restaurant_id, :day, :src_image)";
 
     for($i = 1; $i <= 7; $i++){
 
@@ -32,14 +31,12 @@
                 
 
                 if(!is_meal_in_database($pdo, $val_name, $restaurant_id, $i)){
-                    insert_meal($pdo, $insert_meal_sql, $val_name, $val_price, $val_menu, $restaurant_id, $i, $val_image_src);
+                    insert_meal($pdo, $val_name, $val_price, $val_menu, $restaurant_id, $i, $val_image_src);
                 }else{
 
                 }
             }
         }
     }
-
-    echo json_encode(['message' => 'Meals are already parsed and inserted.']);
-   
+    echo json_encode(['message' => 'Foods are already parsed and inserted.']);
 ?>
