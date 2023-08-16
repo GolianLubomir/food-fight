@@ -38,7 +38,8 @@
     data() {
     return {
       restaurants: ['Klubovňa', 'Eat & Meet', 'Venza'],
-      days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
+      //days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], 
+      days: ["Pondelok", "Utorok", "Streda", "Štvrtok", "Piatok", "Sobota", "Nedeľa"],
     };
   },
   };
